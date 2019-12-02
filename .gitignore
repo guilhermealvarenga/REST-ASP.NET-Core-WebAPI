@@ -3,3 +3,6 @@
 ################################################################################
 
 /.vs/MinhaAPICompleta
+/src/DevIO.Api/obj
+/src/DevIO.Business/obj
+/src/DevIO.Data/obj
