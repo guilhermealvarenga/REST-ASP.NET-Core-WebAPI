@@ -1,4 +1,4 @@
-﻿################################################################################
+################################################################################
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
 
@@ -6,3 +6,7 @@
 /src/DevIO.Api/obj
 /src/DevIO.Business/obj
 /src/DevIO.Data/obj
+src/DevIO.Business/bin
+src/DevIO.Data/bin
+.DS_Store
+src/DevIO.Api/bin
