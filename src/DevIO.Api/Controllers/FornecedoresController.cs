@@ -1,16 +1,15 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using DevIO.Api.ViewModels;
 using DevIO.Business.Intefaces;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace DevIO.Api.Controllers
 {
-    [Route("api/[fornecedores]")]
+    [Route("api/fornecedores")]
     public class FornecedoresController : MainController
     {
-
         private readonly IFornecedorRepository _fornecedorRepository;
         private readonly IMapper _mapper;
 
@@ -18,7 +17,7 @@ namespace DevIO.Api.Controllers
                                       IMapper mapper)
         {
             _fornecedorRepository = fornecedorRepository;
-            mapper = _mapper;
+            _mapper = mapper;
         }
 
         public async Task<IEnumerable<FornecedorViewModel>> ObterTodos()
