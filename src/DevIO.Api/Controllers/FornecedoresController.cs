@@ -13,12 +13,15 @@ namespace DevIO.Api.Controllers
     public class FornecedoresController : MainController
     {
         private readonly IFornecedorRepository _fornecedorRepository;
+        private readonly IEnderecoRepository _enderecoRepository;
         private readonly IFornecedorService _fornecedorService;
         private readonly IMapper _mapper;
 
         public FornecedoresController(IFornecedorRepository fornecedorRepository,
+                                      IEnderecoRepository enderecoRepository,
                                       IFornecedorService fornecedorService,
-                                      IMapper mapper)
+                                      IMapper mapper,
+                                      INotificador notificador) : base(notificador)
         {
             _fornecedorRepository = fornecedorRepository;
             _fornecedorService = fornecedorService;
@@ -45,36 +48,62 @@ namespace DevIO.Api.Controllers
         [HttpPost]
         public async Task<ActionResult<FornecedorViewModel>> Adicionar(FornecedorViewModel fornecedorViewModel)
         {
-            if (!ModelState.IsValid) return BadRequest();
+            if (!ModelState.IsValid) return CustomResponse(ModelState);
 
-            var fornecedor = _mapper.Map<Fornecedor>(fornecedorViewModel);
-            await _fornecedorService.Adicionar(fornecedor);
+            await _fornecedorService.Adicionar(_mapper.Map<Fornecedor>(fornecedorViewModel));
 
-            return Ok();
+            return CustomResponse(fornecedorViewModel);
         }
 
         [HttpPut("{id:guid}")]
         public async Task<ActionResult<FornecedorViewModel>> Atualizar(Guid id, FornecedorViewModel fornecedorViewModel)
         {
-            if (id != fornecedorViewModel.Id) return BadRequest();
+            if (id != fornecedorViewModel.Id)
+            {
+                // ou só usar um BadRequest
+                NotificarErro("O id informado não é o mesmo que foi passado na query");
+                return CustomResponse(fornecedorViewModel);
+            }
 
-            if (!ModelState.IsValid) return BadRequest();
+            if (!ModelState.IsValid) return CustomResponse(ModelState);
 
-            var fornecedor = _mapper.Map<Fornecedor>(fornecedorViewModel);
-            await _fornecedorService.Atualizar(fornecedor);
+            await _fornecedorService.Atualizar(_mapper.Map<Fornecedor>(fornecedorViewModel));
 
-            return Ok(fornecedor);
+            return CustomResponse(fornecedorViewModel);
         }
 
         [HttpDelete("id:guid")]
         public async Task<ActionResult<FornecedorViewModel>> Excluir(Guid id)
         {
-            var fornecedor = await ObterFornecedorEndereco(id);
-            if (fornecedor == null) return NotFound();
+            var fornecedorViewModel = await ObterFornecedorEndereco(id);
+
+            if (fornecedorViewModel == null) return NotFound();
 
             await _fornecedorService.Remover(id);
 
-            return Ok(fornecedor);
+            return CustomResponse();
+        }
+
+        [HttpGet("obter-endereco/{id:guid}")]
+        public async Task<EnderecoViewModel> ObterEnderecoPorId(Guid id)
+        {
+            return _mapper.Map<EnderecoViewModel>(await _enderecoRepository.ObterPorId(id));
+        }
+
+        [HttpPut("atualizar-endereco/{id:guid}")]
+        public async Task<IActionResult> AtualizarEndereco(Guid id, EnderecoViewModel enderecoViewModel)
+        {
+            if (id != enderecoViewModel.Id)
+            {
+                NotificarErro("O id informado não é o mesmo que foi passado na query");
+                return CustomResponse(enderecoViewModel);
+            }
+
+            if (!ModelState.IsValid) return CustomResponse(ModelState);
+
+            await _fornecedorService.AtualizarEndereco(_mapper.Map<Endereco>(enderecoViewModel));
+
+            return CustomResponse(enderecoViewModel);
         }
 
         public async Task<FornecedorViewModel> ObterFornecedorProdutosEndereco(Guid id)
