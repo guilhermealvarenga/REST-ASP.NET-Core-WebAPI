@@ -22,7 +22,8 @@
     <tbody>
       <tr *ngFor='let produto of produtos'>
         <td>
-          <img src="assets/{{ produto.imagem }}" title="{{ produto.nome }}" alt="{{ produto.imagem }}" style="width: 70px; height: 100px">
+          <img src="../../../assets/{{ produto.imagem }}" title="{{ produto.nome }}" alt="{{ produto.imagem }}" style="width: 70px; height: 100px">
+          <!-- <img src="assets/{{ produto.imagem }}" title="{{ produto.nome }}" alt="{{ produto.imagem }}" style="width: 70px; height: 100px"> -->
         </td>
         <td>
           {{ produto.nome }}
