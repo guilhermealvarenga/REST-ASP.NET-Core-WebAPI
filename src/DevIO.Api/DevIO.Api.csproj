@@ -22,5 +22,6 @@
   <ItemGroup>
     <Folder Include="ViewModels\" />
     <Folder Include="wwwroot\" />
+    <Folder Include="Extensions\" />
   </ItemGroup>
 </Project>
