@@ -10,3 +10,4 @@ src/DevIO.Business/bin
 src/DevIO.Data/bin
 .DS_Store
 src/DevIO.Api/bin
+/src/DevIO.Api/wwwroot/app/demo-webapi/.vs
