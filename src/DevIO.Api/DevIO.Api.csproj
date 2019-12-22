@@ -14,6 +14,8 @@
     <Content Remove="wwwroot\app\**" />
     <EmbeddedResource Remove="wwwroot\app\**" />
     <None Remove="wwwroot\app\**" />
+    <Content Remove="appsettings %28copiar%29.Development.json" />
+    <Content Remove="appsettings %28outra cópia%29.json" />
   </ItemGroup>
 
   <ItemGroup>
